@@ -20,8 +20,22 @@
  * }
  *
  */
-function getDNSStats(/* domains */) {
-  throw new Error('Not implemented');
+function getDNSStats(domains) {
+  let arr = domains.map((el) => el.split('.'));
+  const domainsObject = {};
+  while (arr.length > 0) {
+    for (let i = 0; i < arr.length; i++) {
+      const property = `.${arr[i].reverse().join('.')}`;
+      if (domainsObject[property]) {
+        domainsObject[property]++;
+      } else {
+        domainsObject[property] = 1;
+      }
+    }
+    arr.forEach((el) => el.reverse().shift());
+    arr = arr.filter((el) => el.length > 0);
+  }
+  return domainsObject;
 }
-
+// getDNSStats(['epam.com', 'info.epam.com']);
 module.exports = getDNSStats;
